@@ -58,6 +58,10 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+    <dependency>
+      <groupId>org.thymeleaf.extras</groupId>
+      <artifactId>thymeleaf-extras-java8time</artifactId>
+    </dependency>
 	</dependencies>
 	<build>
     <finalName>TodoApp</finalName>
