@@ -35,9 +35,9 @@ class ProjectRepositoryTests {
 
   @Test
   void testDeleteProject() {
-    Project project = repository.findByName("Finish SWD4TA020-course").get(0);
+    Project project = repository.findByName("Education").get(0);
     repository.delete(project);
-    List<Project> projects = repository.findByName("Finish SWD4TA020-course");
+    List<Project> projects = repository.findByName("Education");
     assertThat(projects).hasSize(0);
   }
 
