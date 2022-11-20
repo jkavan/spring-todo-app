@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+	<title>Todo App</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+  <nav th:replace="fragments/header :: header"></nav>
+    <main role="main" class="container" style="margin-top: 5em">
+      <div sec:authorize="hasAuthority('ADMIN')" th:if="${project}">
+        <h3 th:inline="text">Project: [[${project.name}]]</h3>
+        <form class="form-inline" th:action="@{/savetask}" th:object="${task}" method="post">
+          <input type="text" th:field="*{title}"/>
+          <input type="hidden" name="project" th:value="${project.id}"/>
+          <input type="submit" value="Add task" class="btn btn-success"/>
+        </form>
+      </div>
+      <div th:unless="${project}">
+        <h3>All tasks</h3>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th th:unless="${project}">Project</th>
+            <th>Task</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="task: ${tasks}">
+            <td th:unless="${project}"><a th:href="@{/tasks/{id}(id=${task.project.id})}" th:text="${task.project.name}"></a></td>
+            <td th:text="${task.title}"></td>
+            <td if="${task.completed}" th:text="${#temporals.format(task.completed, 'HH:mm dd.MM.yyyy')}"></td>
+            <td>
+              <a th:if="${task.completed}" class="btn btn-warning" th:href="@{/incomplete/{id}(id=${task.id})}">Mark incomplete</a>
+              <a th:unless="${task.completed}" class="btn btn-success" th:href="@{/complete/{id}(id=${task.id})}">Mark completed</a>
+              <a sec:authorize="hasAuthority('ADMIN')" class="btn btn-warning" th:href="@{/edittask/{id}(id=${task.id})}">Edit</a>
+              <a sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger" th:href="@{/deletetask/{id}(id=${task.id})}">Delete</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+</body>
+</html>

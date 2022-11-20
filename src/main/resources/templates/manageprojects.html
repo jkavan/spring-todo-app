@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+	<title>Todo App</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+  <nav th:replace="fragments/header :: header"></nav>
+    <main role="main" class="container" style="margin-top: 5em">
+      <div sec:authorize="hasAuthority('ADMIN')">
+      <h3 th:inline="text">Create a new project</h3>
+      <form class="form-inline" th:action="@{/saveproject}" th:object="${project}" method="post">
+        <input type="text" th:field="*{name}"/>
+        <input type="submit" value="Create project" class="btn btn-success"/>
+      </form>
+      </div>
+      <div>
+        <h3>Select a project</h3>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="project: ${projects}">
+            <td if="${project.completed}">
+              <a th:href="@{/tasks/{id}(id=${project.id})}" th:text="${project.name}"></a>
+            </td>
+            <td th:if="${project.completed}">
+              <a th:text="${#temporals.format(project.completed, 'HH:mm dd.MM.yyyy')}"></a>
+            </td>
+            <td th:unless="${project.completed}">
+              Tasks remaining
+            </td>
+            <td>
+              <a sec:authorize="hasAuthority('ADMIN')" class="btn btn-warning" th:href="@{/editproject/{id}(id=${project.id})}">Edit</a>
+              <a sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger" th:href="@{/deleteproject/{id}(id=${project.id})}">Delete</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+</body>
+</html>

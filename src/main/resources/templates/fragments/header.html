@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+	<title>Todo App</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+  <nav th:fragment="header" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/">Todo App</a>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/projects">Projects</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/tasks">Tasks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/manageprojects">Manage Projects</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:inline="text" style="color: white;">Welcome, [[${#httpServletRequest.remoteUser}]]!</a>
+        </li>
+        <li class="nav-item">
+          <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
+            <input type="submit" value="Log out" class="btn btn-sm form-control mr-sm-2 btn-warning"/>
+          </form>
+        </li>
+      </ul>
+  </nav>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+	<title>Todo App</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+  <nav th:replace="fragments/header :: header"></nav>
+    <main role="main" class="container" style="margin-top: 5em">
+      <div>
+        <h3>Select a project</h3>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="project: ${projects}">
+            <td if="${project.completed}">
+              <a th:href="@{/tasks/{id}(id=${project.id})}" th:text="${project.name}"></a>
+            </td>
+            <td th:if="${project.completed}">
+              <a th:text="${#temporals.format(project.completed, 'HH:mm dd.MM.yyyy')}"></a>
+            </td>
+            <td th:unless="${project.completed}">
+              Tasks remaining
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+</body>
+</html>
