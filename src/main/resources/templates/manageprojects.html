@@ -32,6 +32,7 @@
               <a th:href="@{/tasks/{id}(id=${project.id})}" th:text="${project.name}"></a>
             </td>
             <td th:if="${project.completed}">
+              <span th:if="${project.completed}" style="color:green">✔</span>
               <a th:text="${#temporals.format(project.completed, 'HH:mm dd.MM.yyyy')}"></a>
             </td>
             <td th:unless="${project.completed}">
