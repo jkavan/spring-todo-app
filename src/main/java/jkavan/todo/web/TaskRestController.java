@@ -31,44 +31,38 @@ public class TaskRestController {
     return repository.findAll();
   }
 
+  @GetMapping("/api/task/{id}")
+  Optional<Task> getTask(@PathVariable Long id) {
+    return repository.findById(id);
+  }
+  
   @GetMapping(value = { "/api/tasks/{project_id}" })
-  public Iterable<Task> tasksByProject(@PathVariable("project_id") Long projectId) {
+  public Iterable<Task> getTasksByProject(@PathVariable("project_id") Long projectId) {
     Project project = projects.findById(projectId).orElse(null);
     return repository.findByProject(project);
   }
   
   @PreAuthorize("hasAuthority('ADMIN')")
-  @PostMapping("tasks")
+  @PostMapping("/api/new_task")
   Task newTask(@RequestBody Task newTask) {
     return repository.save(newTask);
   }
 
   @PreAuthorize("hasAuthority('ADMIN')")
-  @PutMapping("/api/tasks/{id}")
+  @PutMapping("/api/edit_task/{id}")
   Task editTask(@RequestBody Task editedTask, @PathVariable Long id) {
     editedTask.setId(id);
     return repository.save(editedTask);
   }
 
   @PreAuthorize("hasAuthority('ADMIN')")
-  @DeleteMapping("/api/tasks/{id}")
+  @DeleteMapping("/api/delete_task/{id}")
   public Iterable<Task> deleteTask(@PathVariable Long id) {
     repository.deleteById(id);
     return repository.findAll();
   }
 
-  @GetMapping("/api/tasks/{id}")
-  Optional<Task> getTask(@PathVariable Long id) {
-    return repository.findById(id);
-  }
-
-  @PreAuthorize("hasAuthority('ADMIN')")
-  @PostMapping("/api/tasks/complete/{id}")
-  Task complete(@RequestBody Task newTask) {
-    return repository.save(newTask);
-  }
-
-  @PostMapping(value = "/api/complete/{id}")
+  @PostMapping(value = "/api/complete_task/{id}")
   public Optional<Task> complete(@PathVariable("id") Long taskId) {
     Task task = repository.findById(taskId).orElse(null);
     task.setCompleted();
@@ -78,7 +72,7 @@ public class TaskRestController {
     return repository.findById(taskId);
   }
 
-  @PostMapping(value = "/api/incomplete/{id}")
+  @PostMapping(value = "/api/incomplete_task/{id}")
   public Optional<Task> incomplete(@PathVariable("id") Long taskId) {
     Task task = repository.findById(taskId).orElse(null);
     task.setIncomplete();

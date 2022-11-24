@@ -25,36 +25,30 @@ public class ProjectRestController {
   public Iterable<Project> getProjects() {
     return repository.findAll();
   }
+
+  @GetMapping("/api/projects/{id}")
+  Optional<Project> getProject(@PathVariable Long id) {
+    return repository.findById(id);
+  }
   
   @PreAuthorize("hasAuthority('ADMIN')")
-  @PostMapping("projects")
+  @PostMapping("/api/new_project")
   Project newProject(@RequestBody Project newProject) {
     return repository.save(newProject);
   }
 
   @PreAuthorize("hasAuthority('ADMIN')")
-  @PutMapping("/api/projects/{id}")
+  @PutMapping("/api/edit_project/{id}")
   Project editProject(@RequestBody Project editedProject, @PathVariable Long id) {
     editedProject.setId(id);
     return repository.save(editedProject);
   }
 
   @PreAuthorize("hasAuthority('ADMIN')")
-  @DeleteMapping("/api/projects/{id}")
+  @DeleteMapping("/api/delete_project/{id}")
   public Iterable<Project> deleteProject(@PathVariable Long id) {
     repository.deleteById(id);
     return repository.findAll();
-  }
-
-  @GetMapping("/api/projects/{id}")
-  Optional<Project> getProject(@PathVariable Long id) {
-    return repository.findById(id);
-  }
-
-  @PreAuthorize("hasAuthority('ADMIN')")
-  @PostMapping("/api/projects/complete/{id}")
-  Project complete(@RequestBody Project newProject) {
-    return repository.save(newProject);
   }
 
 }
