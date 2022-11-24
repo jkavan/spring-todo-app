@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Task {
@@ -16,6 +19,8 @@ public class Task {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
+  @Size(min=3, max=40)
+  @NotBlank(message = "Task description is mandatory")
   private String title;
 
   @Column(columnDefinition = "DATETIME(3)")
@@ -23,6 +28,7 @@ public class Task {
 
   @ManyToOne
   @JoinColumn(name = "project")
+  @NotNull
   private Project project;
 
   public Task() {
