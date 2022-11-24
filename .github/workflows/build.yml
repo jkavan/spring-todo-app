@@ -74,6 +74,9 @@ jobs:
           echo "${{ secrets.KUBECONFIG }}" > /tmp/.kube/config
           echo "KUBECONFIG=/tmp/.kube/config" >> $GITHUB_ENV
 
-      - name: 'Get deployments'
+      - name: 'Deploy the new version'
         run: |
           kubectl get deployments
+          VERSION=${{github.ref_name}}
+          kubectl set image deployment/todo todo=jkavan/spring-todo:${VERSION#v}
+          kubectl rollout status -n swd4ta020 deployment todo
