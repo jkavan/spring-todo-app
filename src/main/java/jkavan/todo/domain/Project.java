@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -18,6 +20,9 @@ public class Project {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+  
+  @Size(min=2, max=20)
+  @NotBlank(message = "Project name is mandatory")
   private String name;
 
   @Column(columnDefinition = "DATETIME(3)")

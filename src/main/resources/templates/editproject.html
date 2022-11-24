@@ -14,6 +14,7 @@
         <input type="hidden" th:field="*{id}" />
         <label for="name">Name:</label>
         <input type="text" th:field="*{name}" />
+	    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger">Error</div>
       </p>
       <p>
         <input type="submit" class="btn btn-success"/>
